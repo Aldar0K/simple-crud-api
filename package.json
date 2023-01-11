@@ -7,6 +7,7 @@
     "start": "node index.js",
     "start:dev": "npx nodemon",
     "build": "tsc ./src",
+    "start:prod": "npm run build && ...",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
@@ -22,9 +23,12 @@
     "url": "https://github.com/Aldar0K/simple-crud-api/issues"
   },
   "homepage": "https://github.com/Aldar0K/simple-crud-api#readme",
-  "dependencies": {},
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "dotenv": "^16.0.3",
