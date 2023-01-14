@@ -20,14 +20,26 @@ class Controller {
     });
   }
 
-  async createUser(data: CreateUserData) {
-    return new Promise((resolve) => {
-      const newUser: User = {
-        id: uuidv4(),
-        ...data
-      };
+  async createUser(data: any): Promise<User> {
+    return new Promise((resolve, reject) => {
+      if (!data.username) {
+        reject(new Error('Recieved object does not have a username field'));
+      } else if (!data.age) {
+        reject(new Error('Recieved object does not have a age field'));
+      } else if (!data.hobbies) {
+        reject(new Error('Recieved object does not have a hobbies field'));
+      } else {
+        const newUser: User = {
+          id: uuidv4(),
+          username: data.username,
+          age: data.age,
+          hobbies: data.hobbies
+        };
 
-      resolve(newUser);
+        users.push(newUser);
+
+        resolve(newUser);
+      }
     });
   }
 

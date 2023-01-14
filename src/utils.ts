@@ -1,18 +1,16 @@
-import { ClientRequest } from 'node:http';
+import { IncomingMessage } from 'node:http';
 
-export const getReqData = (req: ClientRequest) => {
+export const getReqData = (req: IncomingMessage) => {
   return new Promise((resolve, reject) => {
     try {
-      let body = '';
-      // listen to data sent by client
+      // req.setEncoding('utf-8');
+      let data = '';
       req.on('data', (chunk) => {
-        // append the string version to the body
-        body += chunk.toString();
+        data += chunk;
       });
-      // listen till the end
       req.on('end', () => {
-        // send back the data
-        resolve(body);
+        data = JSON.parse(data);
+        resolve(data);
       });
     } catch (error) {
       reject(error);
