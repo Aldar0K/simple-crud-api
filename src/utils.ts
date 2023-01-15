@@ -17,3 +17,5 @@ export const getReqData = (req: IncomingMessage) => {
     }
   });
 };
+
+// TODO add parseUserId (from url) function.

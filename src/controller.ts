@@ -94,7 +94,6 @@ class Controller {
           reject(new MyError(404, `User with id ${id} not found`));
         }
 
-        // TODO test this functional.
         const updatedUser: User = { ...user, ...data };
 
         this.users = this.users.map((user) =>

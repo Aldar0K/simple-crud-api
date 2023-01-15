@@ -2,7 +2,11 @@ import http from 'node:http';
 
 import Controller from './controller';
 import { getReqData } from './utils';
-import { EMPTY_URL_ERROR, NO_ENDPOINT_ERROR } from './constants';
+import {
+  EMPTY_URL_ERROR,
+  NO_ENDPOINT_ERROR,
+  SUCCESSFUL_DELETION_MESSAGE
+} from './constants';
 import { MyError, IError } from './models';
 
 const PORT = process.env.PORT || 4000;
@@ -46,6 +50,14 @@ const server = http.createServer(async (req, res) => {
 
       res.writeHead(200);
       res.end(JSON.stringify(updatedUser));
+    } else if (url.match(/\/api\/users\/*/) && req.method === 'DELETE') {
+      const id = url.split('/')[3];
+
+      await controller.deleteUser(id);
+
+      res.writeHead(204);
+      // If the status code is 204, the message is not sent.
+      res.end(JSON.stringify({ message: SUCCESSFUL_DELETION_MESSAGE }));
     } else {
       throw new MyError(404, NO_ENDPOINT_ERROR);
     }
