@@ -7,7 +7,7 @@ import {
   NO_ENDPOINT_ERROR,
   SUCCESSFUL_DELETION_MESSAGE
 } from './constants';
-import { MyError, IError } from './models';
+import { MyError } from './models';
 
 const PORT = process.env.PORT || 4000;
 const controller = new Controller();

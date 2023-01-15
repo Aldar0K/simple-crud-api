@@ -1,5 +1,5 @@
 import { v4 as uuidv4, validate } from 'uuid';
-import { CreateUserData, MyError, UpdateUserData, User } from './models';
+import { MyError, User } from './models';
 
 class Controller {
   users: User[];
