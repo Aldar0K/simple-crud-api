@@ -5,12 +5,11 @@ import { getReqData } from './utils';
 import { EMPTY_URL_ERROR } from './constants';
 
 const PORT = process.env.PORT || 4000;
+const controller = new Controller();
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const url = req.url;
-  // TODO move controlle init here?
-  const controller = new Controller();
 
   if (!url || url === '/') {
     res.writeHead(404);

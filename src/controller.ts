@@ -1,16 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserData, UpdateUserData, User } from './models';
 
-const users: User[] = [];
-
 class Controller {
+  users: User[];
+
+  constructor() {
+    this.users = [];
+  }
+
   async getUsers() {
-    return new Promise((resolve) => resolve(users));
+    return new Promise((resolve) => resolve(this.users));
   }
 
   async getUser(id: string) {
     return new Promise((resolve, reject) => {
-      const user = users.find((user) => user.id === id);
+      const user = this.users.find((user) => user.id === id);
 
       if (user) {
         resolve(user);
@@ -36,7 +40,7 @@ class Controller {
           hobbies: data.hobbies
         };
 
-        users.push(newUser);
+        this.users = [...this.users, newUser];
 
         resolve(newUser);
       }
@@ -45,7 +49,7 @@ class Controller {
 
   async updateUser(id: string, data: UpdateUserData) {
     return new Promise((resolve, reject) => {
-      const user = users.find((user) => user.id === id);
+      const user = this.users.find((user) => user.id === id);
 
       if (!user) {
         reject(new Error(`User with id ${id} not found `));
@@ -60,7 +64,7 @@ class Controller {
 
   async deleteUser(id: string) {
     return new Promise((resolve, reject) => {
-      const user = users.find((user) => user.id === id);
+      const user = this.users.find((user) => user.id === id);
 
       if (!user) {
         reject(new Error(`User with id ${id} not found `));
