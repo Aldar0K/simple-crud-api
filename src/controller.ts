@@ -8,11 +8,11 @@ class Controller {
     this.users = [];
   }
 
-  async getUsers() {
+  async getUsers(): Promise<User[]> {
     return new Promise((resolve) => resolve(this.users));
   }
 
-  async getUser(id: string) {
+  async getUser(id: string): Promise<User> {
     return new Promise((resolve, reject) => {
       if (!validate(id)) {
         reject(new MyError(400, `User id is invalid (not uuid)`));
@@ -31,11 +31,23 @@ class Controller {
   async createUser(data: any): Promise<User> {
     return new Promise((resolve, reject) => {
       if (!data.username) {
-        reject(new Error('Recieved object does not have a username field'));
+        reject(
+          new MyError(
+            400,
+            'Request body does not contain required username field'
+          )
+        );
       } else if (!data.age) {
-        reject(new Error('Recieved object does not have a age field'));
+        reject(
+          new MyError(400, 'Request body does not contain required age field')
+        );
       } else if (!data.hobbies) {
-        reject(new Error('Recieved object does not have a hobbies field'));
+        reject(
+          new MyError(
+            400,
+            'Request body does not contain required hobbies field'
+          )
+        );
       } else {
         const newUser: User = {
           id: uuidv4(),
@@ -51,36 +63,63 @@ class Controller {
     });
   }
 
-  async updateUser(id: string, data: any) {
+  async updateUser(id: string, data: any): Promise<User> {
     return new Promise((resolve, reject) => {
       if (!data.username) {
-        reject(new Error('Recieved object does not have a username field'));
+        reject(
+          new MyError(
+            400,
+            'Request body does not contain required username field'
+          )
+        );
       } else if (!data.age) {
-        reject(new Error('Recieved object does not have a age field'));
+        reject(
+          new MyError(400, 'Request body does not contain required age field')
+        );
       } else if (!data.hobbies) {
-        reject(new Error('Recieved object does not have a hobbies field'));
+        reject(
+          new MyError(
+            400,
+            'Request body does not contain required hobbies field'
+          )
+        );
       } else {
+        if (!validate(id)) {
+          reject(new MyError(400, `User id is invalid (not uuid)`));
+        }
+
         const user = this.users.find((user) => user.id === id);
 
         if (!user) {
-          reject(new Error(`User with id ${id} not found `));
+          reject(new MyError(404, `User with id ${id} not found`));
         }
 
         // TODO test this functional.
-        const updatedUser = { ...user, ...data };
+        const updatedUser: User = { ...user, ...data };
+
+        this.users = this.users.map((user) =>
+          user.id === id ? updatedUser : user
+        );
 
         resolve(updatedUser);
       }
     });
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise<string> {
     return new Promise((resolve, reject) => {
+      if (!validate(id)) {
+        reject(new MyError(400, `User id is invalid (not uuid)`));
+      }
+
       const user = this.users.find((user) => user.id === id);
 
       if (!user) {
-        reject(new Error(`User with id ${id} not found `));
+        reject(new MyError(404, `User with id ${id} not found`));
       }
+
+      // TODO test this functional.
+      this.users = this.users.filter((user) => user.id !== id);
 
       resolve('User deleted successfully');
     });
