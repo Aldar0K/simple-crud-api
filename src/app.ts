@@ -3,6 +3,7 @@ import http from 'node:http';
 import Controller from './controller';
 import { getReqData } from './utils';
 import { EMPTY_URL_ERROR } from './constants';
+import { MyError, IError } from './models';
 
 const PORT = process.env.PORT || 4000;
 const controller = new Controller();
@@ -42,14 +43,22 @@ const server = http.createServer(async (req, res) => {
   } else if (url.match(/\/api\/users\/*/) && req.method === 'GET') {
     try {
       const id = url.split('/')[3];
-      console.log(id);
       const user = await controller.getUser(id);
 
       res.writeHead(200);
       res.end(JSON.stringify(user));
     } catch (error) {
-      res.writeHead(404);
-      res.end(JSON.stringify({ message: (error as Error).message }));
+      res.writeHead((error as MyError).status);
+      res.end(JSON.stringify({ message: (error as MyError).message }));
+    }
+  } else if (url.match(/\/api\/users\/*/) && req.method === 'PUT') {
+    try {
+      const id = url.split('/')[3];
+      const userData = await getReqData(req);
+
+      const updatedUser = await controller.updateUser(id, userData);
+    } catch (error) {
+      console.log(error);
     }
   }
 });
