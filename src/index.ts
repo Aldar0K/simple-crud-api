@@ -1,4 +1,4 @@
-import http from 'node:http';
+import http from 'http';
 
 import Controller from './controller';
 import { getReqData } from './utils';
