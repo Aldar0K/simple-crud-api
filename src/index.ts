@@ -1,4 +1,5 @@
 import http from 'http';
+import dotenv from 'dotenv';
 
 import Controller from './controller';
 import { getReqData } from './utils';
@@ -9,7 +10,9 @@ import {
 } from './constants';
 import { MyError } from './models';
 
-const PORT = process.env.PORT || 4000;
+dotenv.config();
+const PORT = Number(process.env.PORT) || 4000;
+
 const controller = new Controller();
 
 const server = http.createServer(async (req, res) => {
