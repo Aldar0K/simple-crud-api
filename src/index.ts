@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import Controller from './controller';
 import { getReqData } from './utils';
 import {
+  DEFAULT_PORT,
   EMPTY_URL_ERROR,
   NO_ENDPOINT_ERROR,
   SUCCESSFUL_DELETION_MESSAGE
@@ -11,12 +12,12 @@ import {
 import { MyError } from './models';
 
 dotenv.config();
-const PORT = Number(process.env.PORT) || 4000;
+const PORT = Number(process.env.PORT) || DEFAULT_PORT;
 
 const controller = new Controller();
 
-export const startServer = () => {
-  return http.createServer(async (req, res) => {
+export const startServer = (port: number) => {
+  const server = http.createServer(async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const url = req.url;
 
@@ -70,9 +71,12 @@ export const startServer = () => {
       res.end(JSON.stringify(error));
     }
   });
+
+  server.listen(port, () => {
+    console.log(`Server started on http://localhost:${port}`);
+  });
+
+  return server;
 };
 
-const server = startServer();
-server.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
-});
+startServer(PORT);

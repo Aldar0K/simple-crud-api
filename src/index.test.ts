@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import { v4 as uuidv4 } from 'uuid';
 import { startServer } from '.';
-import { BASE_URL } from './constants';
+import { BASE_URL, DEFAULT_PORT } from './constants';
 import { CreateUserData, UpdateUserData, User } from './models';
 
 const mockUser: User = {
@@ -23,9 +23,9 @@ const mockUpdateUserData: UpdateUserData = {
   hobbies: ['hobby1', 'hobby2', 'hobby3', 'hobby4']
 };
 
-const server = startServer();
+const server = startServer(DEFAULT_PORT);
 
-afterEach((done) => {
+afterAll((done) => {
   server.close();
   done();
 });

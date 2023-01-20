@@ -4,5 +4,5 @@ export const SUCCESSFUL_DELETION_MESSAGE =
 export const EMPTY_URL_ERROR = 'Resource not found';
 export const NO_ENDPOINT_ERROR = 'There is no such endpoint';
 
-export const DEFAULT_PORT = 5000;
+export const DEFAULT_PORT = 4000;
 export const BASE_URL = '/api/users';
